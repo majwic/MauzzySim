@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Command {
 
-    public static String moveTo(String[] commandExpanded) {
+    public static String moveTo(String[] commandExpanded, Robot bot) {
         if (commandExpanded.length != 3) {
             return CommandUse.MOVE_TO.getDescription();
         }
@@ -17,14 +17,7 @@ public class Command {
             return CommandUse.MOVE_TO.getDescription();
         }
 
-        try {
-            Robot bot = new Robot();
-            bot.mouseMove(x, y);
-        } catch (AWTException e) {
-            return CommandUse.PLATFORM_RESTRICTIONS.getDescription();
-        } catch (SecurityException e) {
-            return CommandUse.SECURITY_PERMISSIONS.getDescription();
-        }
+        bot.mouseMove(x, y);
 
         return "";
     }
