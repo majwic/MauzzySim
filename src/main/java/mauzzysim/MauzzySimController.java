@@ -21,16 +21,16 @@ public class MauzzySimController {
         view.getStartButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Add logic to start mouse movements in the model
                 view.getStatusLabel().setText(" Status: Running");
-            }
-        });
 
-        view.getStopButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Add logic to stop mouse movements in the model
-                view.getStatusLabel().setText(" Status: Stopped");
+                String[] commands = view.getTextArea().getText().split("\n");
+                for (String command : commands) {
+                    String error = model.runCommand(command);
+                    view.getErrorLabel().setText(error);
+                    if (!error.isEmpty()) break;
+                }
+
+                view.getStatusLabel().setText(" Status: Finished");
             }
         });
     }
