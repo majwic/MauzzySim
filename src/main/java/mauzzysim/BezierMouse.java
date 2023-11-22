@@ -16,6 +16,8 @@ public class BezierMouse {
     }
 
     private void bezeirMouseMove(Point p1, Point p4) {
+        if (p1.x == p4.x && p1.y == p4.y) return;
+
         Point p2 = generateControlPoint(p1, p4);
         Point p3 = generateControlPoint(p1, p4);
         int destinationPerMove = (int) (Math.ceil(p1.distance(p4)) / 3);
