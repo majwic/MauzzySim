@@ -13,7 +13,7 @@ public class MauzzySimView extends JFrame {
     public MauzzySimView() {
         this.setTitle("MauzzySim");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(getToolkit().getScreenSize().width, getToolkit().getScreenSize().height);
+        this.setSize(500, 400);
         this.setLocationRelativeTo(null);
 
         this.initUI();

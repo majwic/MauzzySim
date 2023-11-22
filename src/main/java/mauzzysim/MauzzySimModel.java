@@ -36,6 +36,8 @@ public class MauzzySimModel {
         switch(commandKeyword) {
             case "moveTo":
                 return Command.moveTo(commandExpanded, bot);
+            case "click":
+                return Command.click(bot);
         }
         return "";
     }

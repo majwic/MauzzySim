@@ -1,6 +1,8 @@
 package mauzzysim;
 
 import java.awt.*;
+import java.awt.event.InputEvent;
+import java.util.Random;
 
 public class Command {
 
@@ -17,7 +19,16 @@ public class Command {
             return CommandUse.MOVE_TO.getDescription();
         }
 
-        bot.mouseMove(x, y);
+        new BezierMouse(bot).bezierMoveTo(x, y);
+
+        return "";
+    }
+
+    public static String click(Robot bot) {
+        Random rand = new Random();
+        bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+        bot.delay(rand.nextInt(50, 150));
+        bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 
         return "";
     }
