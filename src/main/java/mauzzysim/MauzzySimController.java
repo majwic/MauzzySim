@@ -24,11 +24,11 @@ public class MauzzySimController {
                 view.getStatusLabel().setText(" Status: Running");
 
                 String[] commands = view.getTextArea().getText().split("\n");
-                for (String command : commands) {
-                    String error = model.runCommand(command);
-                    view.getErrorLabel().setText(error);
-                    if (!error.isEmpty()) break;
-                }
+                    for (String command : commands) {
+                        String error = model.runCommand(command);
+                        view.getErrorLabel().setText(error);
+                        if (!error.isEmpty()) break;
+                    }
 
                 view.getStatusLabel().setText(" Status: Finished");
             }

@@ -33,13 +33,16 @@ public class MauzzySimModel {
         String commandKeyword = commandExpanded[0];
         int x = 0, y = 0;
 
-        switch(commandKeyword) {
-            case "moveTo":
-                return Command.moveTo(commandExpanded, bot);
-            case "click":
-                return Command.click(bot);
-        }
-        return "";
+        return switch (commandKeyword) {
+            case "moveTo" -> Command.moveTo(commandExpanded, bot);
+            case "move" -> Command.move(commandExpanded, bot);
+            case "moveToZone" -> Command.moveToZone(commandExpanded, bot);
+            case "moveZone" -> Command.moveZone(commandExpanded, bot);
+            case "leftClick" -> Command.leftClick(bot);
+            case "rightClick" -> Command.rightClick(bot);
+            case "wait" -> Command.wait(commandExpanded);
+            default -> "";
+        };
     }
 
     private boolean hasLowLevelInputIssue() {

@@ -15,6 +15,32 @@ public class BezierMouse {
         bezeirMouseMove(new Point(mouseLocation.x, mouseLocation.y), new Point(x, y));
     }
 
+    public void bezierMove(int x, int y) {
+        Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+        int currentX = mouseLocation.x;
+        int currentY = mouseLocation.y;
+
+        bezeirMouseMove(new Point(currentX, currentY), new Point(currentX + x, currentY + y));
+    }
+
+    public void bezierMoveToZone(int x1, int y1, int x2, int y2) {
+        Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+        int boundedX = getRandomBoundedInt(x1, x2);
+        int boundedY = getRandomBoundedInt(y1, y2);
+
+        bezeirMouseMove(new Point(mouseLocation.x, mouseLocation.y), new Point(boundedX, boundedY));
+    }
+
+    public void bezierMoveZone(int x1, int y1, int x2, int y2) {
+        Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+        int currentX = mouseLocation.x;
+        int currentY = mouseLocation.y;
+        int nextX = getRandomBoundedInt(currentX + x1, currentX + x2);
+        int nextY = getRandomBoundedInt(currentY  + y1, currentY + y2);
+
+        bezeirMouseMove(new Point(currentX, currentY), new Point(nextX, nextY));
+    }
+
     private void bezeirMouseMove(Point p1, Point p4) {
         if (p1.x == p4.x && p1.y == p4.y) return;
 
@@ -31,6 +57,11 @@ public class BezierMouse {
                     + 3 * (1 - t) * t * t * p3.x + t * t * t * p4.x;
             y = Math.pow(1 - t, 3) * p1.y + 3 * Math.pow(1 - t, 2) * t * p2.y
                     + 3 * (1 - t) * t * t * p3.y + t * t * t * p4.y;
+
+            if (Double.isNaN(x) || Double.isNaN(y)) {
+                bot.mouseMove(p4.x, p4.y);
+                return;
+            }
 
             bot.mouseMove((int) x, (int) y);
         }
