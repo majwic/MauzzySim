@@ -10,6 +10,7 @@ public class Command {
         if (commandExpanded.length != 3) {
             return CommandUse.MOVE_TO.getDescription();
         }
+        replaceVariables(commandExpanded, 1);
 
         int x, y;
         try {
@@ -28,6 +29,7 @@ public class Command {
         if (commandExpanded.length != 3) {
             return CommandUse.MOVE.getDescription();
         }
+        replaceVariables(commandExpanded, 1);
 
         int x, y;
         try {
@@ -46,6 +48,7 @@ public class Command {
         if (commandExpanded.length != 5) {
             return CommandUse.MOVE_TO_ZONE.getDescription();
         }
+        replaceVariables(commandExpanded, 1);
 
         int x1, y1, x2, y2;
         try {
@@ -66,6 +69,7 @@ public class Command {
         if (commandExpanded.length != 5) {
             return CommandUse.MOVE_ZONE.getDescription();
         }
+        replaceVariables(commandExpanded, 1);
 
         int x1, y1, x2, y2;
         try {
@@ -104,6 +108,7 @@ public class Command {
         if (commandExpanded.length != 2) {
             return CommandUse.WAIT.getDescription();
         }
+        replaceVariables(commandExpanded, 1);
 
         int milliseconds;
         try {
@@ -114,5 +119,27 @@ public class Command {
         }
 
         return "";
+    }
+
+    public static String setVariable(String[] commandExpanded) {
+        if (commandExpanded.length != 3) {
+            return CommandUse.SET.getDescription();
+        }
+        replaceVariables(commandExpanded, 2);
+
+        EnvVariables.setVariable(commandExpanded[1], commandExpanded[2]);
+
+        return "";
+    }
+
+    private static void replaceVariables(String[] commandExpanded, int start) {
+        for (int i = start; i < commandExpanded.length; i++) {
+            String currentToken = commandExpanded[i];
+
+            if (EnvVariables.containsVariable(currentToken, String.class)) {
+                String variableValue = (String) EnvVariables.getVariable(currentToken);
+                commandExpanded[i] = variableValue;
+            }
+        }
     }
 }

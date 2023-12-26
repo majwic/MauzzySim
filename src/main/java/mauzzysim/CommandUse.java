@@ -5,7 +5,8 @@ public enum CommandUse {
     MOVE("USE: move <int> <int>"),
     MOVE_TO_ZONE("USE: moveToZone <int> <int> <int> <int>"),
     MOVE_ZONE("USE: moveZone <int> <int> <int> <int>"),
-    WAIT("USE: wait <+int>");
+    WAIT("USE: wait <+int>"),
+    SET("USE: set <String> <String>");
 
     private final String description;
 

@@ -41,6 +41,7 @@ public class MauzzySimModel {
             case "leftClick" -> Command.leftClick(bot);
             case "rightClick" -> Command.rightClick(bot);
             case "wait" -> Command.wait(commandExpanded);
+            case "set" -> Command.setVariable(commandExpanded);
             default -> "";
         };
     }
