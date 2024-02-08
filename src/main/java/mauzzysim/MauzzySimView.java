@@ -5,6 +5,7 @@ import java.awt.*;
 
 public class MauzzySimView extends JFrame {
     private JButton startButton;
+    private JButton saveButton;
     private JTextArea textArea;
     private JLabel statusLabel;
     private JLabel mousePositionLabel;
@@ -23,12 +24,14 @@ public class MauzzySimView extends JFrame {
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         this.startButton = new JButton("Start");
+        this.saveButton = new JButton("Save");
         this.statusLabel = new JLabel(" Status: Idle");
         this.mousePositionLabel = new JLabel("Mouse Position: ");
         this.errorLabel = new JLabel("");
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(this.startButton);
+        buttonPanel.add(this.saveButton);
         mainPanel.add(buttonPanel, BorderLayout.NORTH);
 
         this.textArea = new JTextArea();
@@ -50,6 +53,10 @@ public class MauzzySimView extends JFrame {
 
     public JButton getStartButton() {
         return this.startButton;
+    }
+
+    public JButton getSaveButton() {
+        return this.saveButton;
     }
 
     public JTextArea getTextArea() {

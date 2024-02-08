@@ -2,6 +2,8 @@ package mauzzysim;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
+import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 import java.util.Random;
 
 public class Command {
@@ -141,5 +143,52 @@ public class Command {
                 commandExpanded[i] = variableValue;
             }
         }
+    }
+
+    public static String capture(String [] commandExpanded, Robot bot) {
+        if (commandExpanded.length != 6) {
+            return CommandUse.CAPTURE.getDescription();
+        }
+
+        int x1, y1, x2, y2;
+        try {
+            x1 = Integer.parseInt(commandExpanded[2]);
+            y1 = Integer.parseInt(commandExpanded[3]);
+            x2 = Integer.parseInt(commandExpanded[4]);
+            y2 = Integer.parseInt(commandExpanded[5]);
+        } catch (NumberFormatException e) {
+            return CommandUse.CAPTURE.getDescription();
+        }
+
+        BufferedImage capturedImage = ImageUtils.captureScreenRegion(x1, y1, x2, y2, bot);
+        EnvVariables.setVariable(commandExpanded[1], capturedImage);
+
+        return "";
+    }
+
+    public static String imageCompare(String[] commandExpanded) {
+        if (commandExpanded.length != 5) {
+            return CommandUse.IMAGE_COMPARE.getDescription();
+        }
+
+        if (!EnvVariables.containsVariable(commandExpanded[1], BufferedImage.class)
+                && !EnvVariables.containsVariable(commandExpanded[3], BufferedImage.class)
+                && !(commandExpanded[2].equals("==") || commandExpanded[2].equals("!="))) {
+            return CommandUse.IMAGE_COMPARE.getDescription();
+        }
+
+        BufferedImage image1 = (BufferedImage) EnvVariables.getVariable(commandExpanded[1]);
+        BufferedImage image2 = (BufferedImage) EnvVariables.getVariable(commandExpanded[3]);
+
+        if (commandExpanded[2].equals("==") && (ImageUtils.calculateMSE(image1, image2) < 0.05f)) {
+            System.out.println(ImageUtils.calculateMSE(image1, image2));
+            return ScriptExecutor.ExecuteScript(commandExpanded[4]);
+        }
+
+        if (commandExpanded[2].equals("!=") && (ImageUtils.calculateMSE(image1, image2) > 0.05f)) {
+            System.out.println(ImageUtils.calculateMSE(image1, image2));
+            return ScriptExecutor.ExecuteScript(commandExpanded[4]);
+        }
+        return "";
     }
 }

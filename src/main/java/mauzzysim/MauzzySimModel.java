@@ -3,11 +3,11 @@ package mauzzysim;
 import java.awt.*;
 
 public class MauzzySimModel {
-    private final String PLATFORM_RESTRICTIONS = "Ensure system allows low-level input control";
-    private final String SECURITY_PERMISSIONS = "Check and grant necessary permissions for input control";
-    private boolean platformRestrictions = false;
-    private boolean securityPermissions = false;
-    private Robot bot;
+    private static final String PLATFORM_RESTRICTIONS = "Ensure system allows low-level input control";
+    private static final String SECURITY_PERMISSIONS = "Check and grant necessary permissions for input control";
+    private static boolean platformRestrictions = false;
+    private static boolean securityPermissions = false;
+    private static Robot bot;
 
     MauzzySimModel() {
         try {
@@ -20,9 +20,9 @@ public class MauzzySimModel {
         }
     }
 
-    public String runCommand(String command) {
-        if (this.hasLowLevelInputIssue()) {
-            return this.lowLevelInputIssue();
+    public static String runCommand(String command) {
+        if (hasLowLevelInputIssue()) {
+            return lowLevelInputIssue();
         }
 
         if (command.isEmpty()) {
@@ -42,19 +42,21 @@ public class MauzzySimModel {
             case "rightClick" -> Command.rightClick(bot);
             case "wait" -> Command.wait(commandExpanded);
             case "set" -> Command.setVariable(commandExpanded);
+            case "capture" -> Command.capture(commandExpanded, bot);
+            case "imageCompare" -> Command.imageCompare(commandExpanded);
             default -> "";
         };
     }
 
-    private boolean hasLowLevelInputIssue() {
-        return this.platformRestrictions || this.securityPermissions;
+    private static boolean hasLowLevelInputIssue() {
+        return platformRestrictions || securityPermissions;
     }
 
-    private String lowLevelInputIssue() {
-        if (this.platformRestrictions) {
-            return this.PLATFORM_RESTRICTIONS;
+    private static String lowLevelInputIssue() {
+        if (platformRestrictions) {
+            return PLATFORM_RESTRICTIONS;
         } else {
-            return this.SECURITY_PERMISSIONS;
+            return SECURITY_PERMISSIONS;
         }
     }
 }

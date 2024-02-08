@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class MauzzySimController {
     private MauzzySimModel model;
@@ -18,19 +21,37 @@ public class MauzzySimController {
         mousePositionUpdater.execute();
 
         // Add action listeners
-        view.getStartButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                view.getStatusLabel().setText(" Status: Running");
+        view.getStartButton().addActionListener(action -> {
+            view.getStatusLabel().setText(" Status: Running");
 
-                String[] commands = view.getTextArea().getText().split("\n");
-                    for (String command : commands) {
-                        String error = model.runCommand(command);
-                        view.getErrorLabel().setText(error);
-                        if (!error.isEmpty()) break;
-                    }
+            String[] commands = view.getTextArea().getText().split("\n");
+                for (String command : commands) {
+                    String error = model.runCommand(command);
+                    view.getErrorLabel().setText(error);
+                    if (!error.isEmpty()) break;
+                }
 
-                view.getStatusLabel().setText(" Status: Finished");
+            view.getStatusLabel().setText(" Status: Finished");
+        });
+
+        view.getSaveButton().addActionListener(action -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File("external-resources/scripts"));
+            int result = fileChooser.showSaveDialog(view);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+
+                String content = view.getTextArea().getText();
+
+                try {
+                    FileWriter fileWriter = new FileWriter(selectedFile);
+                    fileWriter.write(content);
+                    fileWriter.close();
+
+                    view.getStatusLabel().setText(" Status: File saved successfully");
+                } catch (IOException e) {
+                    view.getErrorLabel().setText("Error: Could not save the file");
+                }
             }
         });
     }
